@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finlytics - Financial Analytics Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo-container">
+                    <i class="fas fa-chart-line"></i>
+                    <h1>Finlytics</h1>
+                </div>
+                <p>Sign in to access your financial analytics</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+            </form>
+            <div class="login-footer">
+                <p>Demo Credentials: admin / admin123</p>
+            </div>
+        </div>
+    </div>
+    <div id="dashboard" class="dashboard-container" style="display: none;">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Finlytics</h2>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#dashboard-page" class="nav-link active" data-page="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#analytics-page" class="nav-link" data-page="analytics">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#transactions-page" class="nav-link" data-page="transactions">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#settings-page" class="nav-link" data-page="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <span id="userInfo" class="user-info"></span>
+                </div>
+            </header>
+            <div class="page-content">
+                <div id="dashboard-page" class="page active">
+                    <section class="stats-section">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="totalTransactions">0</h3>
+                                    <p>Total Transactions</p>
+                                </div>
+                            </div>
+                            <div class="stat-card revenue">
+                                <div class="stat-icon">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="totalRevenue">$0</h3>
+                                    <p>Total Revenue</p>
+                                </div>
+                            </div>
+                            <div class="stat-card expense">
+                                <div class="stat-icon">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="totalExpenses">$0</h3>
+                                    <p>Total Expenses</p>
+                                </div>
+                            </div>
+                            <div class="stat-card profit">
+                                <div class="stat-icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="netProfit">$0</h3>
+                                    <p>Net Profit</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="charts-section">
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>Monthly Trends</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="monthlyTrendsChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>Revenue vs Expenses</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="revenueExpenseChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>Transaction Status</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="statusChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h3>User Activity</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="userActivityChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="analytics-page" class="page">
+                    <section class="analytics-section">
+                        <div class="analytics-header">
+                            <h2>Advanced Analytics</h2>
+                            <p>Deep insights into your financial data</p>
+                        </div>
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <h3>Category Analysis</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="categoryAnalysisChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <h3>Trend Analysis</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="trendAnalysisChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <h3>Performance Metrics</h3>
+                                </div>
+                                <div class="metrics-grid">
+                                    <div class="metric-item">
+                                        <span class="metric-label">Growth Rate</span>
+                                        <span class="metric-value" id="growthRate">0%</span>
+                                    </div>
+                                    <div class="metric-item">
+                                        <span class="metric-label">Avg Transaction</span>
+                                        <span class="metric-value" id="avgTransaction">$0</span>
+                                    </div>
+                                    <div class="metric-item">
+                                        <span class="metric-label">Success Rate</span>
+                                        <span class="metric-value" id="successRate">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-header">
+                                    <h3>Top Performers</h3>
+                                </div>
+                                <div class="top-performers-list" id="topPerformersList"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="transactions-page" class="page">
+                    <section class="transactions-section">
+                        <div class="transactions-header">
+                            <h2>Transaction Management</h2>
+                            <div class="transactions-actions">
+                                <button id="exportBtn" class="export-btn">
+                                    <i class="fas fa-download"></i>
+                                    Export CSV
+                                </button>
+                            </div>
+                        </div>
+                        <div class="filters-container">
+                            <div class="filters-grid">
+                                <div class="filter-group">
+                                    <label for="searchInput">Search</label>
+                                    <input type="text" id="searchInput" placeholder="Search transactions...">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="categoryFilter">Category</label>
+                                    <select id="categoryFilter">
+                                        <option value="">All Categories</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="statusFilter">Status</label>
+                                    <select id="statusFilter">
+                                        <option value="">All Statuses</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="userFilter">User ID</label>
+                                    <select id="userFilter">
+                                        <option value="">All Users</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table id="transactionsTable" class="transactions-table">
+                                <thead>
+                                    <tr>
+                                        <th data-sort="id">ID <i class="fas fa-sort"></i></th>
+                                        <th data-sort="date">Date <i class="fas fa-sort"></i></th>
+                                        <th data-sort="amount">Amount <i class="fas fa-sort"></i></th>
+                                        <th data-sort="category">Category <i class="fas fa-sort"></i></th>
+                                        <th data-sort="status">Status <i class="fas fa-sort"></i></th>
+                                        <th data-sort="user_id">User ID <i class="fas fa-sort"></i></th>
+                                        <th>Profile</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="pagination-container">
+                            <div class="pagination-info">
+                                <span id="paginationInfo">Showing 0 of 0 transactions</span>
+                            </div>
+                            <div class="pagination-controls">
+                                <button id="prevPage" class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span id="pageInfo">Page 1 of 1</span>
+                                <button id="nextPage" class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="settings-page" class="page">
+                    <section class="settings-section">
+                        <div class="settings-header">
+                            <h2>Settings</h2>
+                            <p>Configure your application preferences</p>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="settings-card">
+                                <div class="settings-header">
+                                    <h3>Profile Settings</h3>
+                                </div>
+                                <div class="settings-content">
+                                    <p>Profile settings will be available in future updates.</p>
+                                </div>
+                            </div>
+                            <div class="settings-card">
+                                <div class="settings-header">
+                                    <h3>Notification Preferences</h3>
+                                </div>
+                                <div class="settings-content">
+                                    <p>Notification settings will be available in future updates.</p>
+                                </div>
+                            </div>
+                            <div class="settings-card">
+                                <div class="settings-header">
+                                    <h3>Data Export</h3>
+                                </div>
+                                <div class="settings-content">
+                                    <p>Data export settings will be available in future updates.</p>
+                                </div>
+                            </div>
+                            <div class="settings-card">
+                                <div class="settings-header">
+                                    <h3>Security</h3>
+                                </div>
+                                <div class="settings-content">
+                                    <p>Security settings will be available in future updates.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export CSV Configuration</h3>
+                <button class="modal-close" id="closeExportModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="export-section">
+                    <h4>Select Columns to Export</h4>
+                    <div class="columns-grid" id="columnsGrid">
+                        <label class="column-checkbox">
+                            <input type="checkbox" value="id" checked>
+                            <span>ID</span>
+                        </label>
+                        <label class="column-checkbox">
+                            <input type="checkbox" value="date" checked>
+                            <span>Date</span>
+                        </label>
+                        <label class="column-checkbox">
+                            <input type="checkbox" value="amount" checked>
+                            <span>Amount</span>
+                        </label>
+                        <label class="column-checkbox">
+                            <input type="checkbox" value="category" checked>
+                            <span>Category</span>
+                        </label>
+                        <label class="column-checkbox">
+                            <input type="checkbox" value="status" checked>
+                            <span>Status</span>
+                        </label>
+                        <label class="column-checkbox">
+                            <input type="checkbox" value="user_id" checked>
+                            <span>User ID</span>
+                        </label>
+                        <label class="column-checkbox">
+                            <input type="checkbox" value="user_profile">
+                            <span>User Profile</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="export-section">
+                    <h4>Apply Current Filters</h4>
+                    <p>Current search and filter settings will be applied to the exported data.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelExport" class="btn-secondary">Cancel</button>
+                <button id="confirmExport" class="btn-primary">
+                    <i class="fas fa-download"></i>
+                    Export CSV
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="alertContainer" class="alert-container"></div>
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

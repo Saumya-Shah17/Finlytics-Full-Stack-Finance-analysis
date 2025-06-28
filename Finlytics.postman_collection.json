@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "Finlytics API",
+    "_postman_id": "f1n1yt1cs-collection-001",
+    "description": "Postman collection for Finlytics Financial Analytics Dashboard API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": { "raw": "{{base_url}}/api/login", "host": ["{{base_url}}"], "path": ["api", "login"] }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "  var json = pm.response.json();",
+              "  pm.collectionVariables.set('token', json.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Verify Token",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{base_url}}/api/verify-token", "host": ["{{base_url}}"], "path": ["api", "verify-token"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Dashboard Stats",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{base_url}}/api/dashboard-stats", "host": ["{{base_url}}"], "path": ["api", "dashboard-stats"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Transactions",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/transactions?limit=10&page=1",
+          "host": ["{{base_url}}"],
+          "path": ["api", "transactions"],
+          "query": [
+            { "key": "limit", "value": "10" },
+            { "key": "page", "value": "1" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Transactions (Filtered)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/transactions?category=Revenue&status=Paid&user_id=user_001&limit=5",
+          "host": ["{{base_url}}"],
+          "path": ["api", "transactions"],
+          "query": [
+            { "key": "category", "value": "Revenue" },
+            { "key": "status", "value": "Paid" },
+            { "key": "user_id", "value": "user_001" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Export CSV",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/export-csv?columns=id,date,amount,category,status,user_id",
+          "host": ["{{base_url}}"],
+          "path": ["api", "export-csv"],
+          "query": [
+            { "key": "columns", "value": "id,date,amount,category,status,user_id" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{base_url}}/api/logout", "host": ["{{base_url}}"], "path": ["api", "logout"] }
+      },
+      "response": []
+    }
+  ]
+} 
