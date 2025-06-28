@@ -1,13 +1,11 @@
-services:
-  - type: web
-    name: financial-analytics-dashboard
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.9.16
-      - key: JWT_SECRET_KEY
-        generateValue: true
-      - key: MONGO_URI
-        sync: false 
+  services:
+    - type: web
+      name: finlytics-dashboard
+      env: python
+      buildCommand: "pip install -r requirements.txt"
+      startCommand: "python app.py"
+      envVars:
+        - key: MONGO_URI
+          sync: false
+        - key: JWT_SECRET_KEY
+          sync: false
