@@ -4,6 +4,16 @@ A comprehensive full-stack financial analytics dashboard built with Python Flask
 
 ---
 
+## 🌐 Live Demo
+
+**Deployed on Render:**
+[https://finlytics-full-stack-finance-analysis.onrender.com](https://finlytics-full-stack-finance-analysis.onrender.com)
+
+- Access the dashboard, analytics, and transactions live.
+- API base URL for all endpoints: `https://finlytics-full-stack-finance-analysis.onrender.com/api/`
+
+---
+
 ## 🚀 Features
 
 ### **Authentication & Security**
@@ -138,6 +148,11 @@ Loopr Ai/
    - Access your live application at the provided URL
 
 ## 📊 API Endpoints
+
+**Base URL:**
+```
+https://finlytics-full-stack-finance-analysis.onrender.com/api/
+```
 
 ### **Authentication**
 - `POST /api/login` - User login
@@ -449,4 +464,21 @@ Loopr Ai/
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🧪 API Testing with Postman
+
+A ready-to-use Postman collection is available:
+
+- **Public Postman Collection:**  
+  [Finlytics API Public Collection (Postman)](https://saumyashah-2944455.postman.co/workspace/Saumya-Shah's-Workspace~3d5e8912-f271-4dfc-8ce9-b75e04ce756c/collection/45964758-0c6a51e5-86a0-43f1-96fc-88440fa05830?action=share&creator=45964758)
+
+### **How to Use:**
+1. Open the public collection link above and click "Fork" or "Run in Postman".
+2. Set the `base_url` collection variable to:
+   ```
+   https://finlytics-full-stack-finance-analysis.onrender.com
+   ```
+   (This is already set by default.)
+3. Use the "Login" request first; the token will be saved automatically for other requests.
+4. Test all endpoints, including filtering and CSV export. 
