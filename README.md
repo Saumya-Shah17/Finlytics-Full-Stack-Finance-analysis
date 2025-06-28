@@ -4,6 +4,19 @@ A comprehensive full-stack financial analytics dashboard built with Python Flask
 
 ---
 
+## 🧪 API Testing with Postman (Public Collection)
+
+- **Public Postman Collection:**  
+  [Finlytics API Public Collection (Postman)](https://saumyashah-2944455.postman.co/workspace/Saumya-Shah's-Workspace~3d5e8912-f271-4dfc-8ce9-b75e04ce756c/collection/45964758-0c6a51e5-86a0-43f1-96fc-88440fa05830?action=share&creator=45964758)
+
+**How to Use:**
+1. Open the public collection link and click "Fork" or "Run in Postman".
+2. The `base_url` is already set to your Render deployment.
+3. Use the "Login" request first; the token will be saved for other requests.
+4. Test all endpoints, including filtering and CSV export.
+
+---
+
 ## 🌐 Live Demo
 
 **Deployed on Render:**
